@@ -1,31 +1,70 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SI_Lab2Test {
+
+
+class SILab2Test {
+    List<Time> lista = new LinkedList<>();
+    List<Integer> rez = new ArrayList<>();
+    RuntimeException mess;
+    @Test
+    void everyBranchStatement() {
+
+        lista.add(new Time(1,1,1));
+        rez.add(3661);
+        assertEquals(rez, SI_Lab2.function(lista));
+
+        lista.add(new Time(24,0,0));
+        rez.add(86400);
+        assertEquals(rez, SI_Lab2.function(lista));
+
+        lista.add(new Time(-7,11,17));
+        mess = assertThrows(RuntimeException.class, () -> SI_Lab2.function(lista));
+        assertTrue(mess.getMessage().contains("The hours are smaller than the minimum"));
+
+        List<Time> lista1 = new LinkedList<>();
+        lista1.add(new Time(32,13,10));
+        mess = assertThrows(RuntimeException.class, () -> SI_Lab2.function(lista1));
+        assertTrue(mess.getMessage().contains("The hours are grater than the maximum"));
+
+        List<Time> lista2 = new LinkedList<>();
+        lista2.add(new Time(10,-8,9));
+        mess = assertThrows(RuntimeException.class, () -> SI_Lab2.function(lista2));
+        assertTrue(mess.getMessage().contains("The minutes are not valid!"));
+
+        List<Time> lista3 = new LinkedList<>();
+        lista3.add(new Time(10,18,-20));
+        mess = assertThrows(RuntimeException.class, () -> SI_Lab2.function(lista3));
+        assertTrue(mess.getMessage().contains("The seconds are not valid"));
+
+        List<Time> lista4 = new LinkedList<>();
+        List<Integer> r = new ArrayList<>();
+        assertEquals(r, SI_Lab2.function(lista4));
+
+    }
 
     @Test
-    public void test2() {
-        //Testing branch 1,2,3,4,5,8
-        Time t = new Time(34, 30, 30);
-        List lists = new ArrayList<>();
-        lists.add(t);
-        try {
-            SI_Lab2.function(lists);
-        } catch (Exception e) {
-            assertEquals(e.getMessage(), "The hours are grater than the maximum");
-        }
+    void multipleCondition(){
+        //if (hr < 0 || hr > 24)
+        lista.add(new Time(-7,11,17));
+        mess = assertThrows(RuntimeException.class, () -> SI_Lab2.function(lista));
+        assertTrue(mess.getMessage().contains("The hours are smaller than the minimum"));
+
+        List<Time> lista1 = new LinkedList<>();
+        lista1.add(new Time(32,13,10));
+        mess = assertThrows(RuntimeException.class, () -> SI_Lab2.function(lista1));
+        assertTrue(mess.getMessage().contains("The hours are grater than the maximum"));
+
+        List<Time> lista2 = new LinkedList<>();
+        lista2.add(new Time(10,-8,9));
+        mess = assertThrows(RuntimeException.class, () -> SI_Lab2.function(lista2));
+        assertTrue(mess.getMessage().contains("The minutes are not valid!"));
+
     }
-    @Test
-    public void test6() {
-        Time t = new Time(24, 0, 0);
-        List list = new ArrayList<>();
-        List result = new ArrayList<>();
-        list.add(t);
-        result = SI_Lab2.function(list);
-        assertEquals(result.get(0), t.getHours() * 3600 + t.getMinutes() * 60 + t.getSeconds());
-    }
+
 }
